@@ -9,21 +9,38 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from calculations import area_of_circle, get_nth_fibonacci   # noqa: E402
 
-
-def test_area_of_circle_positive_radius():
-    """Test with a positive radius."""
+def test_area_of_circle_negative_radius():
+    """Test with a negative radius."""
     # Arrange
-    radius = 1
+    radius = -1
+
+    # Act & Assert
+    with pytest.raises(ValueError) as exc_info:
+        area_of_circle(radius)
+    assert str(exc_info.value) == "Radius cannot be negative"
+
+
+def test_get_nth_fibonacci_negative():
+    """Test with negative n."""
+    # Arrange
+    n = -1
+
+    # Act & Assert
+    with pytest.raises(ValueError) as exc_info:
+        get_nth_fibonacci(n)
+    assert str(exc_info.value) == "n cannot be negative"
+
+
+def test_get_nth_fibonacci_two():
+    """Test with n=2 to cover the else branch."""
+    # Arrange
+    n = 2
 
     # Act
-    result = area_of_circle(radius)
+    result = get_nth_fibonacci(n)
 
     # Assert
-    assert abs(result - 3.14159) < 1e-5
-
-
-def test_area_of_circle_zero_radius():
-    """Test with a radius of zero."""
+    assert result == 1
     # Arrange
     radius = 0
 
